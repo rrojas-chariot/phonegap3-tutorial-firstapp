@@ -1,3 +1,4 @@
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -37,13 +38,45 @@ var app = {
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
+
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        app.getDeviceInfo(parentElement);
+        app.getConnectionInfo(parentElement);
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+    },
+    getDeviceInfo: function(parentElement) {
+        var modelElement         = parentElement.querySelector('#model');
+        var versionElement       = parentElement.querySelector('#version');
+        var platformElement      = parentElement.querySelector('#platform');
+        var uuidElement          = parentElement.querySelector('#uuid');
+        var deviceVersionElement = parentElement.querySelector('#device-vesion');
 
-        console.log('Received Event: ' + id);
+        modelElement.innerHTML         = device.model;
+        versionElement.innerHTML       = device.cordova;
+        platformElement.innerHTML      = device.platform;
+        uuidElement.innerHTML          = device.uuid;
+        deviceVersionElement.innerHTML = device.version;
+    },
+    getConnectionInfo: function(parentElement) {
+
+        var connectionTypeElement = parentElement.querySelector('#conn-type');
+
+        var networkState = navigator.connection.type;
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'Wifi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.CELL]     = 'Cellular connection';
+        states[Connection.NONE]     = 'No network connection';
+
+
+
+        connectionTypeElement.innerHTML = states[networkState];
+
+
     }
 };
+
